@@ -1,48 +1,97 @@
-it is p2p platform where users can create room , share thier screen and talk with video sharing and find other dev to code together and share the github repo where user find the issue together with other dev .
+# Devfinder
 
--Architecture
+Devfinder is a **peer-to-peer (P2P) collaboration platform** for developers to connect, code, and solve bugs together in real-time. Users can create or join rooms, share their screen, talk via video calls, and collaborate on togther by providing issue at room creating by linking githubrepo link and languages as a tag they used in repo.
 
-## ![alt text](image.png)
+---
 
-Screenshots
+## Features 
 
-![alt text](<Screenshot 2024-11-25 212436.png>)
-![alt text](<Screenshot 2024-11-25 212504.png>)
-![alt text](<Screenshot 2024-11-25 213959.png>)
+*  **Peer-to-Peer Rooms**: Secure, temporary rooms to pair program or debug together by creating or joining rooms by providing github repo.
+*  **Video & Screen Sharing**: Built with getstream.io api for video and screen share connection .
+*  **Real-Time Collaboration**: Collaborate with developers from around the world and paircode with other .
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+---
 
-## Getting Started
+## Getting Started 
 
-First, run the development server:
+Clone the repository:
+
+```bash
+git clone https://github.com/Anantdadhich/Devfinder
+cd Devfinder
+```
+
+Install dependencies:
+
+```bash
+
+npm install
+
+```
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Setup Prisma  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npx prisma  generate  
+```bash 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+npx prisma generate  
+npx prisma db push
 
-## Learn More
+```
+Setup your .env 
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+DATABASE_URL=""
+NEXTAUTH_SECRET=""
+NEXT_PUBLIC_GET_STREAM_API_KEY=""
+NEXT_PUBLIC_GET_STREAM_SECRET_TOEKN=""
+GET_STREAM_SECRET_KEY=""
+NEXTAUTH_URL="http://localhost:3000/"
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Architecture 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![alt text](image.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
+
+## Tech Stack
+- Next.js
+
+- TypeScript 
+
+ - GetStream 
+
+ - Prisma ORM 
+
+- NextAuth.js 
+
+- Neon.tech 
+
+
+---
+## Sreenshot
+
+ ! [alt text](dev.png)
+ 
+
+---
+
+## License 
+
+[MIT](LICENSE)
+
+---
+
+Built with ❤️ by Adtech

@@ -7,7 +7,7 @@ return     <html lang="en" suppressHydrationWarning>
      <SessionProvider>
      <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >

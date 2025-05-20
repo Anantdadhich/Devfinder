@@ -2,11 +2,34 @@ import React from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { unstable_noStore } from "next/cache";
+import { Fira_Code } from "next/font/google";
+import { Code2, GitBranch, GitPullRequest, Star } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { SearchBar } from "./SearchBar";
 import { RoomCard } from "./room-card";
 import { getRooms } from "@/data-access/rooms";
+
+
+
+function FloatingIcon({
+  className,
+  icon,
+}: {
+  className?: string;
+  delay?: number;
+  rotate?: number;
+  icon: React.ReactNode;
+}) {
+  return (
+    <div className={`absolute ${className}`}>
+      <div className="relative">
+        <div className="w-12 h-12 bg-blue-500/30 rounded-xl flex items-center justify-center shadow-lg backdrop-blur-sm border border-blue-400/20">
+          {icon}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default async function EnhancedRoomBrowser({
   searchParams
@@ -19,47 +42,75 @@ export default async function EnhancedRoomBrowser({
   const rooms = await getRooms(searchParams.search);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
-     
-      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-        <div 
-          className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-purple-500 to-indigo-600 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] animate-pulse"
-          style={{
-            clipPath: "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-          }}
-        />
+    <div className={`min-h-screen bg-slate-900 relative overflow-hidden `}>
+      {/* Background elements */}
+      <div className="absolute inset-0 z-0 opacity-20">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8884_1px,transparent_1px),linear-gradient(to_bottom,#8884_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
       </div>
+      
+      {/* Glowing orbs */}
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"></div>
+      
+      {/* Floating elements */}
+      <FloatingIcon 
+        className="top-24 left-[8%] hidden lg:flex" 
+        rotate={-5}
+        icon={<Code2 size={24} className="text-blue-200" />} 
+      />
+      <FloatingIcon 
+        className="bottom-32 left-[5%] hidden lg:flex" 
+        rotate={5}
+        icon={<GitBranch size={24} className="text-blue-200" />} 
+      />
+      <FloatingIcon 
+        className="top-40 right-[8%] hidden lg:flex" 
+        rotate={10} 
+        icon={<Star size={24} className="text-blue-200" />} 
+      />
+    
 
-      <main className="relative isolate px-6 pt-14 lg:px-8">
+   
+
+      <main className="relative isolate px-6 pt-14 lg:px-8 z-10">
         <div className="mx-auto max-w-6xl">
-         
-          <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 mb-4 sm:mb-0">
-              Find BugFinder Rooms
-            </h1>
-            <Button 
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-xl transition-all duration-300 hover:scale-105"
-              asChild
-            >
-              <Link href="/create-room">Create Room</Link>
-            </Button>
+          {/* Header with gradient badge */}
+          <div className="flex flex-col items-start mb-10">
+            <div className="inline-block px-3 py-1 rounded-full bg-blue-500/20 backdrop-blur-sm border border-blue-400/20 mb-4">
+              <span className="text-sm font-medium text-blue-200 tracking-wide font-mono">
+                Developer Collaboration
+              </span>
+            </div>
+          
+            <div className="flex flex-col sm:flex-row justify-between items-center w-full">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500 mb-4 sm:mb-0">
+                Find DevFinder Rooms
+              </h1>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-lg shadow-blue-500/20 border border-blue-500/50 transition-all duration-300 hover:scale-105"
+                asChild
+              >
+                <Link href="/create-room">Create Room</Link>
+              </Button>
+            </div>
+            
+            <p className="text-blue-100/80 mt-4 max-w-xl">
+              Connect with developers worldwide and solve coding challenges together in real-time peer-to-peer sessions.
+            </p>
           </div>
 
-       
-          <div className="mb-12">
-            <SearchBar />
-          </div>
+        
 
-       
+          {/* Room cards grid */}
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {rooms.map((room: any) => (
               <RoomCard key={room.id} room={room} />
             ))}
           </div>
 
-         
+          {/* Empty state with matching styling */}
           {rooms.length === 0 && (
-            <div className="flex flex-col gap-6 justify-center items-center mt-24 sm:mt-16 md:mt-12 lg:mt-8">
+            <div className="flex flex-col gap-6 justify-center items-center mt-24 sm:mt-16 md:mt-12 lg:mt-8 p-8 rounded-xl bg-slate-800/50 backdrop-blur-sm border border-blue-500/20">
               <Image 
                 src="/no-data.svg" 
                 alt="no data image" 
@@ -67,32 +118,25 @@ export default async function EnhancedRoomBrowser({
                 height="200" 
                 className="w-48 h-48 sm:w-40 sm:h-40 md:w-32 md:h-32 lg:w-28 lg:h-28"
               />
-              <h2 className="text-2xl sm:text-xl md:text-lg lg:text-base text-gray-800 dark:text-gray-200">
+              <h2 className="text-2xl sm:text-xl md:text-lg text-blue-100">
                 No rooms available
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
+              <p className="text-blue-200/70 text-center max-w-md">
                 Be the first to create a collaboration room and start coding together!
               </p>
               <Button 
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-lg shadow-blue-500/20 border border-blue-500/50 transition-all duration-300 hover:scale-105"
                 asChild
               >
                 <Link href="/create-room">Create Room</Link>
               </Button>
             </div>
           )}
-        </div>
-
-       
-        <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-          <div 
-            className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-purple-500 to-indigo-600 opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem] animate-pulse"
-            style={{
-              clipPath: "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
-            }}
-          />
+         
+      
         </div>
       </main>
+      
     </div>
   );
 }
